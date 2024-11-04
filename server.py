@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Nov  4 10:15:21 2024
+
+@author: suwaidi
+"""
+
 from flask import Flask
 from flask import render_template
 from flask import Response, request, jsonify
@@ -38,7 +46,7 @@ scoreboard = [
 
 @app.route('/')
 def show_scoreboard():
-    return render_template('scoreboard.html', scoreboard = scoreboard) 
+    return render_template('scoreboard.html', scoreboard=sorted(scoreboard, key=lambda x: x['score'], reverse = True))
 
 @app.route('/increase_score', methods=['GET', 'POST'])
 def increase_score():
@@ -51,12 +59,12 @@ def increase_score():
         if team["id"] == team_id:
             team["score"] += 1
 
-    return jsonify(scoreboard=scoreboard)
+    show_scoreboard()
+    return jsonify(scoreboard=sorted(scoreboard, key=lambda x: x['score'], reverse = True))
 
 
 if __name__ == '__main__':
    app.run(debug = True)
-
 
 
 
